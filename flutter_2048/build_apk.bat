@@ -1,0 +1,1 @@
+$env:ANDROID_HOME = "D:\flutter\android-sdk"; $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"; C:\runtime\flutter_windows_3.41.9-stable\flutter\bin\flutter.bat build apk --release
