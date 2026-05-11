@@ -1,0 +1,33 @@
+{
+    "name": "game2048",
+    "version": "1.0.0",
+    "description": "2048 game with Electron",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder",
+        "build:web": "flutter build web",
+        "package": "npm run build:web && npm run build"
+    },
+    "build": {
+        "appId": "com.example.game2048",
+        "productName": "2048",
+        "directories": {
+            "buildResources": "resources"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "resources/icon.ico"
+        },
+        "files": [
+            "main.js",
+            "preload.js",
+            "../build/web/**/*",
+            "resources/**/*"
+        ]
+    },
+    "devDependencies": {
+        "electron": "^28.0.0",
+        "electron-builder": "^24.6.4"
+    }
+}
