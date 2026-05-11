@@ -1,101 +1,75 @@
-# 2048 Game
+# 2048 Game (Flutter)
 
-一个基于Flutter开发的2048小游戏，支持多种平台，包括Electron桌面端。
+这是一个以 **Flutter** 为主的 2048 小游戏项目，当前开发重点是 Android 平台，代码主目录为 `flutter_2048/`。
+
+## 当前状态
+
+- 主开发方向：Flutter（Android 优先）
+- Electron 桌面端：已移除
+- 需求与上架文档：位于 `.docs/05-09/`
 
 ## 功能特性
 
-- 🎮 经典2048游戏玩法
-- 🎨 支持深色/浅色主题切换
-- 📊 多个关卡选择（3x3到10x10）
-- 💾 本地数据持久化保存
-- 📳 震动反馈支持
-- ⌨️ 键盘控制支持（↑↓←→ 或 WASD）
-- 📱 触摸滑动控制
-- 🖥️ Electron桌面端支持
+- 经典 2048 数字合并玩法
+- 支持 3x3 到 10x10 网格尺寸
+- 深色/浅色主题切换
+- 分数与最高分记录
+- 本地数据持久化（SharedPreferences）
+- 触摸滑动交互
+- 震动反馈（移动端）
 
 ## 技术栈
 
-- **纯前端**: HTML5 + CSS3 + JavaScript (ES6+)
-- **框架**: 无依赖原生实现
-- **存储**: LocalStorage
-- **Electron 28+**: 桌面端打包
+- Flutter (Dart SDK `^3.11.0`)
+- provider `^6.0.5`
+- shared_preferences `^2.2.2`
+- vibration `^3.1.8`
 
-## 运行项目
+## 快速开始
 
-### 前置要求
+### 1. 环境准备
 
-纯前端版本无需安装任何框架，直接打开即可运行。如需Electron桌面端，需安装Node.js：
-- [Node.js官方安装](https://nodejs.org/)
+- 安装 Flutter SDK（建议稳定版）
+- 配置 Android 开发环境（Android SDK + 模拟器或真机）
 
-### 纯前端运行（推荐）
+### 2. 安装依赖并运行
 
-**方式一：直接打开HTML文件**
 ```bash
-# 直接在浏览器中打开 web/index.html
-start web/index.html  # Windows
-open web/index.html   # macOS/Linux
+cd flutter_2048
+flutter pub get
+flutter run
 ```
 
-**方式二：使用本地服务器**
-```bash
-# 使用Python启动简单服务器
-python -m http.server 8000
-
-# 然后在浏览器访问 http://localhost:8000/web/
-```
-
-### Electron桌面端运行
+### 3. 构建 APK
 
 ```bash
-# 进入Electron目录
-cd electron
-
-# 安装依赖
-npm install
-
-# 运行Electron开发模式
-npm start
-
-# 构建Windows安装包
-npm run build
+cd flutter_2048
+flutter build apk --release
 ```
 
 ## 项目结构
 
+```text
+.
+├── flutter_2048/                 # Flutter 主项目
+│   ├── lib/
+│   │   ├── components/           # 视图组件
+│   │   ├── models/               # 数据模型
+│   │   ├── providers/            # 状态管理
+│   │   ├── screens/              # 页面
+│   │   └── main.dart             # 入口
+│   ├── android/                  # Android 工程
+│   ├── web/                      # Flutter Web 资源
+│   └── windows/                  # Flutter Windows 资源
+├── .docs/05-09/                  # 需求与上架文档
+└── README.md
 ```
-├── web/             # 纯前端代码（无需依赖即可运行）
-│   ├── index.html      # 页面结构
-│   ├── style.css       # 样式文件
-│   └── app.js          # 游戏逻辑
-├── electron/        # Electron配置（可选）
-│   ├── main.js          # 主进程
-│   ├── preload.js       # 预加载脚本
-│   ├── package.json     # 依赖配置
-│   └── resources/       # 资源文件
-├── .docs/           # 需求文档
-└── README.md        # 项目说明
-```
 
-## 键盘控制
+## 文档入口
 
-| 按键 | 功能 |
-|------|------|
-| ↑ / W | 向上移动 |
-| ↓ / S | 向下移动 |
-| ← / A | 向左移动 |
-| → / D | 向右移动 |
+- 需求文档：`.docs/05-09/2048游戏需求开发文档.md`
+- 上架清单：`.docs/05-09/GooglePlay上架问题清单.md`
 
-## 游戏规则
+## License
 
-1. 使用滑动控制方块移动
-2. 相同数字的方块碰撞时会合并成一个
-3. 目标是合并出2048方块
-4. 无法移动时游戏结束
-
-## 开发者
-
-- GitHub: [bilibili-niang](https://github.com/bilibili-niang)
-
-## 许可证
-
-MIT License
+MIT
