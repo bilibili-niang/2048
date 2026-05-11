@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Clear+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="heading">
+                <h1 class="title">2048</h1>
+                <p class="subtitle">经典数字合并游戏</p>
+            </div>
+            <div class="score-container">
+                <div class="score-box">
+                    <div class="score-label">分数</div>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                <div class="score-box best">
+                    <div class="score-label">最高分</div>
+                    <div class="score-value" id="bestScore">0</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="controls">
+            <button class="btn new-game" id="newGameBtn">新游戏</button>
+            <button class="btn settings" id="settingsBtn">设置</button>
+            <button class="btn level" id="levelBtn">关卡</button>
+        </div>
+
+        <div class="game-board" id="gameBoard">
+            <div class="grid-container" id="gridContainer"></div>
+            <div class="tile-container" id="tileContainer"></div>
+        </div>
+
+        <div class="game-info">
+            <p>使用 <strong>方向键</strong> 或 <strong>WASD</strong> 控制移动</p>
+            <p>在移动设备上使用 <strong>滑动手势</strong></p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <p class="modal-message" id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button class="btn primary" id="modalBtn1"></button>
+                <button class="btn" id="modalBtn2" style="display: none;"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsOverlay">
+        <div class="modal settings-modal">
+            <h2 class="modal-title">设置</h2>
+            <div class="settings-content">
+                <div class="setting-item">
+                    <span class="setting-label">深色模式</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">音效</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn primary" id="settingsCloseBtn">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="levelOverlay">
+        <div class="modal level-modal">
+            <h2 class="modal-title">选择关卡</h2>
+            <div class="level-grid">
+                <button class="level-btn" data-size="3">3x3<br><span class="level-desc">简单</span></button>
+                <button class="level-btn" data-size="4">4x4<br><span class="level-desc">普通</span></button>
+                <button class="level-btn" data-size="5">5x5<br><span class="level-desc">困难</span></button>
+                <button class="level-btn" data-size="6">6x6<br><span class="level-desc">专家</span></button>
+            </div>
+            <div class="custom-level">
+                <label>自定义尺寸:</label>
+                <input type="range" id="customSize" min="3" max="10" value="4">
+                <span id="customSizeDisplay">4x4</span>
+                <button class="btn primary" id="customStartBtn">开始</button>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn" id="levelCloseBtn">返回</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

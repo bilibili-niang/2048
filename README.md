@@ -15,46 +15,36 @@
 
 ## 技术栈
 
-- Flutter 3.10+
-- Provider (状态管理)
-- SharedPreferences (数据存储)
-- Vibration (震动反馈)
-- Electron 28+ (桌面端)
+- **纯前端**: HTML5 + CSS3 + JavaScript (ES6+)
+- **框架**: 无依赖原生实现
+- **存储**: LocalStorage
+- **Electron 28+**: 桌面端打包
 
 ## 运行项目
 
 ### 前置要求
 
-确保已安装 Flutter SDK 和 Node.js：
-- [Flutter官方安装指南](https://docs.flutter.dev/get-started/install)
+纯前端版本无需安装任何框架，直接打开即可运行。如需Electron桌面端，需安装Node.js：
 - [Node.js官方安装](https://nodejs.org/)
 
-### Flutter运行命令
+### 纯前端运行（推荐）
 
+**方式一：直接打开HTML文件**
 ```bash
-# 安装依赖
-flutter pub get
-
-# 运行项目（默认设备）
-flutter run
-
-# 运行到Android设备
-flutter run -d android
-
-# 运行到iOS设备
-flutter run -d ios
-
-# 构建Web版本
-flutter build web
-
-# 构建Android APK
-flutter build apk
-
-# 构建iOS IPA
-flutter build ios
+# 直接在浏览器中打开 web/index.html
+start web/index.html  # Windows
+open web/index.html   # macOS/Linux
 ```
 
-### Electron运行命令
+**方式二：使用本地服务器**
+```bash
+# 使用Python启动简单服务器
+python -m http.server 8000
+
+# 然后在浏览器访问 http://localhost:8000/web/
+```
+
+### Electron桌面端运行
 
 ```bash
 # 进入Electron目录
@@ -62,9 +52,6 @@ cd electron
 
 # 安装依赖
 npm install
-
-# 先构建Flutter Web
-npm run build:web
 
 # 运行Electron开发模式
 npm start
@@ -76,35 +63,17 @@ npm run build
 ## 项目结构
 
 ```
-├── lib/             # Flutter源代码
-│   ├── components/       # UI组件
-│   │   ├── game_board.dart    # 游戏网格
-│   │   ├── score_board.dart   # 分数面板
-│   │   ├── tile.dart          # 方块组件
-│   │   ├── level_select.dart  # 关卡选择
-│   │   └── settings_panel.dart # 设置面板
-│   ├── game/            # 游戏引擎
-│   │   └── game_engine.dart   # 核心游戏逻辑
-│   ├── models/          # 数据模型
-│   │   ├── tile.dart          # 方块数据
-│   │   ├── game_state.dart    # 游戏状态
-│   │   └── level.dart         # 关卡数据
-│   ├── providers/       # 状态管理
-│   │   ├── game_provider.dart # 游戏状态
-│   │   └── theme_provider.dart # 主题状态
-│   ├── screens/         # 页面
-│   │   └── game_screen.dart   # 游戏页面
-│   ├── services/        # 服务
-│   │   ├── storage_service.dart  # 存储服务
-│   │   └── vibration_service.dart # 震动服务
-│   └── main.dart        # 应用入口
-├── electron/        # Electron配置
+├── web/             # 纯前端代码（无需依赖即可运行）
+│   ├── index.html      # 页面结构
+│   ├── style.css       # 样式文件
+│   └── app.js          # 游戏逻辑
+├── electron/        # Electron配置（可选）
 │   ├── main.js          # 主进程
 │   ├── preload.js       # 预加载脚本
 │   ├── package.json     # 依赖配置
 │   └── resources/       # 资源文件
-├── build/web/       # Flutter Web构建输出
-└── pubspec.yaml     # Flutter依赖配置
+├── .docs/           # 需求文档
+└── README.md        # 项目说明
 ```
 
 ## 键盘控制

@@ -5,9 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "build": "electron-builder",
-        "build:web": "flutter build web",
-        "package": "npm run build:web && npm run build"
+        "build": "electron-builder"
     },
     "build": {
         "appId": "com.example.game2048",

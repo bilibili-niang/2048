@@ -19,7 +19,7 @@ function createWindow() {
         title: '2048 Game'
     });
 
-    mainWindow.loadFile(path.join(__dirname, '../build/web/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
 
     const menu = Menu.buildFromTemplate([
         {
