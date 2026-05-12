@@ -57,6 +57,17 @@ class TileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.isDarkMode;
+    final animationKey = ValueKey('${tile.row}-${tile.col}-${tile.value}-${tile.isNew}-${tile.isMerged}');
+    final startScale = tile.isNew
+        ? 0.72
+        : tile.isMerged
+            ? 1.18
+            : 1.0;
+    final animationDuration = tile.isNew
+        ? const Duration(milliseconds: 220)
+        : tile.isMerged
+            ? const Duration(milliseconds: 170)
+            : const Duration(milliseconds: 120);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
@@ -68,10 +79,11 @@ class TileWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       child: tile.value != 0
-          ? AnimatedScale(
-              scale: tile.isNew ? 1.2 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.bounceOut,
+          ? TweenAnimationBuilder<double>(
+              key: animationKey,
+              tween: Tween<double>(begin: startScale, end: 1.0),
+              duration: animationDuration,
+              curve: Curves.easeOutBack,
               child: Center(
                 child: Text(
                   tile.value.toString(),
@@ -82,6 +94,9 @@ class TileWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              builder: (context, scale, child) {
+                return Transform.scale(scale: scale, child: child);
+              },
             )
           : null,
     );

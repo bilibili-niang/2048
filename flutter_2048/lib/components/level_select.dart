@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:game2048/providers/game_provider.dart';
 
-class LevelSelect extends StatelessWidget {
-  const LevelSelect({super.key});
+class LevelSelect extends StatefulWidget {
+  final int initialSize;
+
+  const LevelSelect({super.key, required this.initialSize});
+
+  @override
+  State<LevelSelect> createState() => _LevelSelectState();
+}
+
+class _LevelSelectState extends State<LevelSelect> {
+  late int _selectedSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedSize = widget.initialSize;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +37,10 @@ class LevelSelect extends StatelessWidget {
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
             children: [
-              _LevelButton(size: 3, label: '3×3 简单'),
-              _LevelButton(size: 4, label: '4×4 普通'),
-              _LevelButton(size: 5, label: '5×5 困难'),
-              _LevelButton(size: 6, label: '6×6 专家'),
+              _LevelButton(size: 3, label: '3×3 简单', selectedSize: _selectedSize, onSelected: _select),
+              _LevelButton(size: 4, label: '4×4 普通', selectedSize: _selectedSize, onSelected: _select),
+              _LevelButton(size: 5, label: '5×5 困难', selectedSize: _selectedSize, onSelected: _select),
+              _LevelButton(size: 6, label: '6×6 专家', selectedSize: _selectedSize, onSelected: _select),
             ],
           ),
           const SizedBox(height: 20),
@@ -36,50 +49,68 @@ class LevelSelect extends StatelessWidget {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          Consumer<GameProvider>(
-            builder: (context, gameProvider, child) {
-              return Column(
-                children: [
-                  Slider(
-                    value: gameProvider.gridSize.toDouble(),
-                    min: 3,
-                    max: 10,
-                    divisions: 7,
-                    label: '${gameProvider.gridSize}×${gameProvider.gridSize}',
-                    onChanged: (value) {
-                      gameProvider.setGridSize(value.toInt());
-                    },
-                  ),
-                  Text('当前: ${gameProvider.gridSize}×${gameProvider.gridSize}'),
-                ],
-              );
-            },
+          Column(
+            children: [
+              Slider(
+                value: _selectedSize.toDouble(),
+                min: 3,
+                max: 10,
+                divisions: 7,
+                label: '$_selectedSize×$_selectedSize',
+                onChanged: (value) {
+                  setState(() {
+                    _selectedSize = value.toInt();
+                  });
+                },
+              ),
+              Text('当前: $_selectedSize×$_selectedSize'),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, _selectedSize),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff8f7a66),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('下一步'),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  void _select(int size) {
+    setState(() {
+      _selectedSize = size;
+    });
+    Navigator.pop(context, size);
   }
 }
 
 class _LevelButton extends StatelessWidget {
   final int size;
   final String label;
+  final int selectedSize;
+  final ValueChanged<int> onSelected;
 
-  const _LevelButton({required this.size, required this.label});
+  const _LevelButton({
+    required this.size,
+    required this.label,
+    required this.selectedSize,
+    required this.onSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        Provider.of<GameProvider>(context, listen: false).setGridSize(size);
-        Navigator.pop(context);
-      },
-      child: Text(label),
+      onPressed: () => onSelected(size),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xff8f7a66),
+        backgroundColor: selectedSize == size ? const Color(0xff5c4b3a) : const Color(0xff8f7a66),
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 12),
       ),
+      child: Text(label),
     );
   }
 }

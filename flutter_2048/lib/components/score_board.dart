@@ -5,8 +5,14 @@ import 'package:game2048/providers/theme_provider.dart';
 class ScoreBoard extends StatelessWidget {
   final int score;
   final int bestScore;
+  final int targetTile;
 
-  const ScoreBoard({super.key, required this.score, required this.bestScore});
+  const ScoreBoard({
+    super.key,
+    required this.score,
+    required this.bestScore,
+    required this.targetTile,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +32,13 @@ class ScoreBoard extends StatelessWidget {
           title: '最高分',
           value: bestScore,
           color: const Color(0xffbbada0),
+          isDark: themeProvider.isDarkMode,
+        ),
+        const SizedBox(width: 16),
+        _ScoreCard(
+          title: '目标',
+          value: targetTile,
+          color: const Color(0xffc97b63),
           isDark: themeProvider.isDarkMode,
         ),
       ],
@@ -61,7 +74,7 @@ class _ScoreCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: isDark ? Colors.grey[400] : Colors.white.withOpacity(0.8),
+              color: isDark ? Colors.grey[400] : Colors.white.withValues(alpha: 0.8),
             ),
           ),
           Text(

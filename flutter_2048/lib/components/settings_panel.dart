@@ -43,11 +43,11 @@ class SettingsPanel extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('确定'),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xff8f7a66),
               foregroundColor: Colors.white,
             ),
+            child: const Text('确定'),
           ),
         ],
       ),

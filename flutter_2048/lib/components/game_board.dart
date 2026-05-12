@@ -13,6 +13,13 @@ class GameBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    if (grid.length != gridSize || grid.any((row) => row.length != gridSize)) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: themeProvider.isDarkMode ? Colors.white : const Color(0xff8f7a66),
+        ),
+      );
+    }
     final double boardPadding = 12;
     final double tilePadding = 8;
     final double boardWidth = MediaQuery.of(context).size.width - 32;
@@ -37,9 +44,24 @@ class GameBoard extends StatelessWidget {
           int row = index ~/ gridSize;
           int col = index % gridSize;
           model.Tile tile = grid[row][col];
-          return TileWidget(
-            tile: tile,
-            size: tileSize,
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 140),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.96, end: 1.0).animate(animation),
+                  child: child,
+                ),
+              );
+            },
+            child: TileWidget(
+              key: ValueKey('tile-$row-$col-${tile.value}-${tile.isMerged}-${tile.isNew}'),
+              tile: tile,
+              size: tileSize,
+            ),
           );
         },
       ),
