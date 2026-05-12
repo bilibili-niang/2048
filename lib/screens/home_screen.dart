@@ -7,6 +7,7 @@ import 'package:game2048/providers/game_provider.dart';
 import 'package:game2048/providers/theme_provider.dart';
 import 'package:game2048/screens/game_screen.dart';
 import 'package:game2048/screens/history_screen.dart';
+import 'package:game2048/services/sound_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -64,7 +65,10 @@ class HomeScreen extends StatelessWidget {
                         _ResumeCard(gameProvider: gameProvider),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: () => _startNewGame(context, gameProvider),
+                          onPressed: () {
+                            SoundService().play('click');
+                            _startNewGame(context, gameProvider);
+                          },
                           style: _buttonStyle(),
                           child: const Text('新游戏'),
                         ),
@@ -94,6 +98,7 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
+                            SoundService().play('click');
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (_) => const HistoryScreen()),
@@ -104,7 +109,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                          onPressed: () => _showSettings(context),
+                          onPressed: () {
+                            SoundService().play('click');
+                            _showSettings(context);
+                          },
                           style: _buttonStyle(),
                           child: const Text('设置'),
                         ),

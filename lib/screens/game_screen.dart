@@ -7,6 +7,7 @@ import 'package:game2048/components/game_board.dart';
 import 'package:game2048/components/confirm_dialog.dart';
 import 'package:game2048/components/score_board.dart';
 import 'package:game2048/components/settings_panel.dart';
+import 'package:game2048/services/sound_service.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -46,7 +47,10 @@ class _GameScreenState extends State<GameScreen> {
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
-              onPressed: () => _showSettings(),
+              onPressed: () {
+                SoundService().play('click');
+                _showSettings();
+              },
             ),
           ],
         ),
@@ -195,7 +199,10 @@ class _GameScreenState extends State<GameScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            onPressed: () => _confirmRestart(context, gameProvider),
+                            onPressed: () {
+                              SoundService().play('click');
+                              _confirmRestart(context, gameProvider);
+                            },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               backgroundColor: const Color(0xff8f7a66),

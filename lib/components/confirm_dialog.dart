@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game2048/services/sound_service.dart';
 
 class ConfirmDialog extends StatefulWidget {
   final String title;
@@ -30,13 +31,17 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
       content: Text(widget.message),
       actions: [
         TextButton(
-          onPressed: _submitting ? null : () => Navigator.pop(context, false),
+          onPressed: _submitting ? null : () {
+            SoundService().play('click');
+            Navigator.pop(context, false);
+          },
           child: const Text('取消'),
         ),
         FilledButton(
           onPressed: _submitting
               ? null
               : () async {
+                  SoundService().play('click');
                   setState(() {
                     _submitting = true;
                   });

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:game2048/providers/theme_provider.dart';
 import 'package:game2048/providers/game_provider.dart';
+import 'package:game2048/services/sound_service.dart';
 
 class SettingsPanel extends StatelessWidget {
   const SettingsPanel({super.key});
@@ -72,7 +73,10 @@ class SettingsPanel extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              SoundService().play('click');
+              Navigator.pop(context);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xff8f7a66),
               foregroundColor: Colors.white,
