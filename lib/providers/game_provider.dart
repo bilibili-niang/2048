@@ -76,7 +76,7 @@ class GameProvider extends ChangeNotifier {
     _gridSize = prefs.getInt(_gridSizeKey) ?? 4;
     _bestScore = prefs.getInt(_bestScoreKey(_gridSize)) ?? 0;
     _vibrationEnabled = prefs.getBool(_vibrationEnabledKey) ?? true;
-    _soundEnabled = prefs.getBool(_soundEnabledKey) ?? false;
+    _soundEnabled = prefs.getBool(_soundEnabledKey) ?? true;
     _historyRecords = _loadHistoryRecords(prefs);
     _resumeSnapshot = _loadSnapshot(prefs);
     _hasResumableGame = prefs.getBool(_activeGameExistsKey) ?? false;
