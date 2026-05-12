@@ -1,75 +1,64 @@
-# 2048 Game (Flutter)
+# 2048 Game
 
-这是一个以 **Flutter** 为主的 2048 小游戏项目，当前开发重点是 Android 平台，代码主目录为 `flutter_2048/`。
-
-## 当前状态
-
-- 主开发方向：Flutter（Android 优先）
-- Electron 桌面端：已移除
-- 需求与上架文档：位于 `.docs/05-09/`
+一个使用Flutter开发的2048小游戏，支持安卓平台。
 
 ## 功能特性
 
-- 经典 2048 数字合并玩法
-- 支持 3x3 到 10x10 网格尺寸
-- 深色/浅色主题切换
-- 分数与最高分记录
-- 本地数据持久化（SharedPreferences）
-- 触摸滑动交互
-- 震动反馈（移动端）
+- 🎮 经典2048数字合并玩法
+- 🎯 支持多种网格大小（3×3 ~ 10×10）
+- 🌓 深色/浅色主题切换
+- 📊 分数和最高分记录
+- 📱 触摸滑动控制
+- 📳 震动反馈
+- 💾 数据持久化存储
 
 ## 技术栈
 
-- Flutter (Dart SDK `^3.11.0`)
-- provider `^6.0.5`
-- shared_preferences `^2.2.2`
-- vibration `^3.1.8`
+- Flutter 3.10+
+- Provider (状态管理)
+- SharedPreferences (数据存储)
+- Vibration (震动反馈)
 
-## 快速开始
-
-### 1. 环境准备
-
-- 安装 Flutter SDK（建议稳定版）
-- 配置 Android 开发环境（Android SDK + 模拟器或真机）
-
-### 2. 安装依赖并运行
+## 运行项目
 
 ```bash
-cd flutter_2048
+# 安装依赖
 flutter pub get
+
+# 运行项目
 flutter run
-```
 
-### 3. 构建 APK
-
-```bash
-cd flutter_2048
-flutter build apk --release
+# 构建APK
+flutter build apk
 ```
 
 ## 项目结构
 
-```text
-.
-├── flutter_2048/                 # Flutter 主项目
-│   ├── lib/
-│   │   ├── components/           # 视图组件
-│   │   ├── models/               # 数据模型
-│   │   ├── providers/            # 状态管理
-│   │   ├── screens/              # 页面
-│   │   └── main.dart             # 入口
-│   ├── android/                  # Android 工程
-│   ├── web/                      # Flutter Web 资源
-│   └── windows/                  # Flutter Windows 资源
-├── .docs/05-09/                  # 需求与上架文档
-└── README.md
+```
+lib/
+├── components/      # UI组件
+│   ├── game_board.dart
+│   ├── tile.dart
+│   ├── score_board.dart
+│   ├── level_select.dart
+│   └── settings_panel.dart
+├── models/          # 数据模型
+│   └── tile.dart
+├── providers/       # 状态管理
+│   ├── game_provider.dart
+│   └── theme_provider.dart
+├── screens/         # 页面
+│   └── game_screen.dart
+└── main.dart        # 入口文件
 ```
 
-## 文档入口
+## 游戏说明
 
-- 需求文档：`.docs/05-09/2048游戏需求开发文档.md`
-- 上架清单：`.docs/05-09/GooglePlay上架问题清单.md`
+1. 通过滑动屏幕移动方块
+2. 相同数字的方块碰撞时会合并成一个
+3. 目标是合并出2048方块
+4. 当无法移动时游戏结束
 
-## License
+## 许可证
 
-MIT
+MIT License
