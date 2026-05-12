@@ -266,10 +266,10 @@ class GameProvider extends ChangeNotifier {
         if (value >= targetTile && !_hasWon) {
           _hasWon = true;
           _isWin = true;
-          _vibrateLong();
+          _vibrate(150);
           _playSound('win');
         } else {
-          _vibrateShort();
+          _vibrate(40);
         }
         readIndex += 2;
       } else {
@@ -311,10 +311,12 @@ class GameProvider extends ChangeNotifier {
     }
 
     if (!moved) {
+      _vibrate(10);
       notifyListeners();
       return;
     }
 
+    _vibrate(10);
     _playSound('move');
     if (_hasMergedInLastMove) {
       _playSound('merge');
@@ -393,6 +395,7 @@ class GameProvider extends ChangeNotifier {
 
     final randomTile = emptyTiles[_random.nextInt(emptyTiles.length)];
     final value = generateSpawnTileValue(_random);
+    _vibrate(30);
     _playSound('spawn');
     _grid[randomTile.row][randomTile.col] = Tile(
       randomTile.row,
@@ -487,7 +490,7 @@ class GameProvider extends ChangeNotifier {
     }
 
     _isGameOver = true;
-    _vibrateLong();
+    _vibrate(200);
     _playSound('lose');
     await _archiveCurrentGame('over');
   }
@@ -661,18 +664,10 @@ class GameProvider extends ChangeNotifier {
 
   String _newId() => DateTime.now().microsecondsSinceEpoch.toString();
 
-  void _vibrateShort() async {
+  void _vibrate(int duration) async {
     if (_vibrationEnabled) {
       try {
-        await Vibration.vibrate(duration: 50);
-      } catch (_) {}
-    }
-  }
-
-  void _vibrateLong() async {
-    if (_vibrationEnabled) {
-      try {
-        await Vibration.vibrate(duration: 200);
+        await Vibration.vibrate(duration: duration);
       } catch (_) {}
     }
   }

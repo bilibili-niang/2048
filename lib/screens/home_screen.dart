@@ -8,6 +8,7 @@ import 'package:game2048/providers/theme_provider.dart';
 import 'package:game2048/screens/game_screen.dart';
 import 'package:game2048/screens/history_screen.dart';
 import 'package:game2048/services/sound_service.dart';
+import 'package:vibration/vibration.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -67,6 +68,7 @@ class HomeScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             SoundService().play('click');
+                            Vibration.vibrate(duration: 10);
                             _startNewGame(context, gameProvider);
                           },
                           style: _buttonStyle(),
@@ -76,6 +78,7 @@ class HomeScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: gameProvider.hasResumableGame
                               ? () async {
+                                  Vibration.vibrate(duration: 10);
                                   final restored = await gameProvider.resumeSavedGame();
                                   if (!context.mounted) {
                                     return;
@@ -99,6 +102,7 @@ class HomeScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             SoundService().play('click');
+                            Vibration.vibrate(duration: 10);
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (_) => const HistoryScreen()),
@@ -111,6 +115,7 @@ class HomeScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             SoundService().play('click');
+                            Vibration.vibrate(duration: 10);
                             _showSettings(context);
                           },
                           style: _buttonStyle(),

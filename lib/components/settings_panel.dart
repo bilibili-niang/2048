@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:game2048/providers/theme_provider.dart';
 import 'package:game2048/providers/game_provider.dart';
 import 'package:game2048/services/sound_service.dart';
+import 'package:vibration/vibration.dart';
 
 class SettingsPanel extends StatelessWidget {
   const SettingsPanel({super.key});
@@ -75,6 +76,7 @@ class SettingsPanel extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               SoundService().play('click');
+              Vibration.vibrate(duration: 10);
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(

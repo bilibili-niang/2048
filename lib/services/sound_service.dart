@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 
 class SoundService {
@@ -20,8 +22,12 @@ class SoundService {
     _enabled = value;
   }
 
-  Future<void> play(String name) async {
+  void play(String name) {
     if (!_enabled) return;
+    unawaited(_playAsync(name));
+  }
+
+  Future<void> _playAsync(String name) async {
     try {
       var player = _players[name];
       if (player == null) {
