@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
+import 'package:game2048/services/sound_service.dart';
 import 'package:game2048/config/game_rules.dart';
 import 'package:game2048/models/active_game_snapshot.dart';
 import 'package:game2048/models/history_record.dart';
@@ -18,6 +19,7 @@ class GameProvider extends ChangeNotifier {
   static const String _gridSizeKey = 'grid_size';
   static const String _vibrationEnabledKey = 'vibration_enabled';
   static const String _ruleProfileVersionKey = 'rule_profile_version';
+  static const String _soundEnabledKey = 'sound_enabled';
 
   final Random _random = Random();
 
@@ -30,7 +32,9 @@ class GameProvider extends ChangeNotifier {
   bool _isWin = false;
   bool _hasWon = false;
   bool _vibrationEnabled = true;
+  bool _soundEnabled = true;
   bool _isLoading = true;
+  bool _hasMergedInLastMove = false;
   bool _hasResumableGame = false;
   String? _currentHistoryId;
   String? _currentStartAt;
@@ -46,6 +50,7 @@ class GameProvider extends ChangeNotifier {
   bool get isWin => _isWin;
   bool get hasWon => _hasWon;
   bool get vibrationEnabled => _vibrationEnabled;
+  bool get soundEnabled => _soundEnabled;
   bool get isLoading => _isLoading;
   bool get hasResumableGame => _hasResumableGame;
   int get targetTile => getTargetTile(_gridSize);
@@ -71,6 +76,7 @@ class GameProvider extends ChangeNotifier {
     _gridSize = prefs.getInt(_gridSizeKey) ?? 4;
     _bestScore = prefs.getInt(_bestScoreKey(_gridSize)) ?? 0;
     _vibrationEnabled = prefs.getBool(_vibrationEnabledKey) ?? true;
+    _soundEnabled = prefs.getBool(_soundEnabledKey) ?? true;
     _historyRecords = _loadHistoryRecords(prefs);
     _resumeSnapshot = _loadSnapshot(prefs);
     _hasResumableGame = prefs.getBool(_activeGameExistsKey) ?? false;
@@ -256,10 +262,12 @@ class GameProvider extends ChangeNotifier {
         value *= 2;
         _score += value;
         mergedIndices.add(writeIndex);
+        _hasMergedInLastMove = true;
         if (value >= targetTile && !_hasWon) {
           _hasWon = true;
           _isWin = true;
           _vibrateLong();
+          _playSound('win');
         } else {
           _vibrateShort();
         }
@@ -284,6 +292,7 @@ class GameProvider extends ChangeNotifier {
     }
 
     _clearTransientTileFlags();
+    _hasMergedInLastMove = false;
 
     var moved = false;
     switch (direction) {
@@ -304,6 +313,11 @@ class GameProvider extends ChangeNotifier {
     if (!moved) {
       notifyListeners();
       return;
+    }
+
+    _playSound('move');
+    if (_hasMergedInLastMove) {
+      _playSound('merge');
     }
 
     _steps += 1;
@@ -350,6 +364,19 @@ class GameProvider extends ChangeNotifier {
     await prefs.setBool(_vibrationEnabledKey, _vibrationEnabled);
   }
 
+  Future<void> toggleSound() async {
+    _soundEnabled = !_soundEnabled;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_soundEnabledKey, _soundEnabled);
+  }
+
+  void _playSound(String name) {
+    if (_soundEnabled) {
+      SoundService().play(name);
+    }
+  }
+
   void addRandomTile() {
     final emptyTiles = <Tile>[];
     for (var i = 0; i < _gridSize; i++) {
@@ -366,6 +393,7 @@ class GameProvider extends ChangeNotifier {
 
     final randomTile = emptyTiles[_random.nextInt(emptyTiles.length)];
     final value = generateSpawnTileValue(_random);
+    _playSound('spawn');
     _grid[randomTile.row][randomTile.col] = Tile(
       randomTile.row,
       randomTile.col,
@@ -460,6 +488,7 @@ class GameProvider extends ChangeNotifier {
 
     _isGameOver = true;
     _vibrateLong();
+    _playSound('lose');
     await _archiveCurrentGame('over');
   }
 

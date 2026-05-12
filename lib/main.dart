@@ -3,8 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:game2048/providers/game_provider.dart';
 import 'package:game2048/providers/theme_provider.dart';
 import 'package:game2048/screens/home_screen.dart';
+import 'package:game2048/services/sound_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SoundService().initialize();
   runApp(const MyApp());
 }
 

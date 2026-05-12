@@ -21,10 +21,40 @@ class SettingsPanel extends StatelessWidget {
           Consumer<ThemeProvider>(
             builder: (context, themeProvider, child) {
               return ListTile(
-                title: const Text('深色模式'),
+                title: const Text('主题'),
+                trailing: DropdownButton<AppThemeMode>(
+                  value: themeProvider.themeMode,
+                  underline: const SizedBox.shrink(),
+                  items: const [
+                    DropdownMenuItem(
+                      value: AppThemeMode.system,
+                      child: Text('跟随系统'),
+                    ),
+                    DropdownMenuItem(
+                      value: AppThemeMode.light,
+                      child: Text('浅色'),
+                    ),
+                    DropdownMenuItem(
+                      value: AppThemeMode.dark,
+                      child: Text('深色'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      themeProvider.setThemeMode(value);
+                    }
+                  },
+                ),
+              );
+            },
+          ),
+          Consumer<GameProvider>(
+            builder: (context, gameProvider, child) {
+              return ListTile(
+                title: const Text('音效'),
                 trailing: Switch(
-                  value: themeProvider.isDarkMode,
-                  onChanged: (value) => themeProvider.setDarkMode(value),
+                  value: gameProvider.soundEnabled,
+                  onChanged: (value) => gameProvider.toggleSound(),
                 ),
               );
             },
