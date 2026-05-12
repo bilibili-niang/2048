@@ -5,6 +5,14 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+import java.util.Properties
+
+val keyProperties = Properties()
+val keyPropertiesFile = rootProject.file("key.properties")
+if (keyPropertiesFile.exists()) {
+    keyPropertiesFile.inputStream().use { keyProperties.load(it) }
+}
+
 android {
     namespace = "com.example.game2048"
     compileSdk = flutter.compileSdkVersion
@@ -32,9 +40,21 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            val hasReleaseSignConfig = keyProperties["storeFile"] != null &&
+                keyProperties["storePassword"] != null &&
+                keyProperties["keyAlias"] != null &&
+                keyProperties["keyPassword"] != null
+
+            signingConfig = if (hasReleaseSignConfig) {
+                signingConfigs.create("release") {
+                    storeFile = file(keyProperties["storeFile"] as String)
+                    storePassword = keyProperties["storePassword"] as String
+                    keyAlias = keyProperties["keyAlias"] as String
+                    keyPassword = keyProperties["keyPassword"] as String
+                }
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
